@@ -1,17 +1,38 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 
+=======
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
 import sys
 import selectors
 import json
 import io
 import struct
 
+<<<<<<< HEAD
 request_search = {
     "morpheus": "Follow the white rabbit. \U0001f430",
+=======
+
+
+def createNewList():
+    print('in new function!')
+    newList = []
+    listOfLists['arg'] = newList
+    # respond to client with string "created new list with name: arg"
+
+
+request_search = {
+    "createNewList": createNewList(),
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
     "ring": "In the caves beneath the Misty Mountains. \U0001f48d",
     "\U0001f436": "\U0001f43e Playing ball! \U0001f3d0",
 }
 
+<<<<<<< HEAD
+=======
+listOfLists = {}
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
 
 class Message:
     def __init__(self, selector, sock, addr):
@@ -92,8 +113,14 @@ class Message:
 
     def _create_response_json_content(self):
         action = self.request.get("action")
+<<<<<<< HEAD
         if action == "search":
             query = self.request.get("value")
+=======
+        if action == "do":
+            query = self.request.get("value")
+            print(query)
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
             answer = request_search.get(query) or f'No match for "{query}".'
             content = {"result": answer}
         else:
@@ -117,8 +144,15 @@ class Message:
 
     def process_events(self, mask):
         if mask & selectors.EVENT_READ:
+<<<<<<< HEAD
             self.read()
         if mask & selectors.EVENT_WRITE:
+=======
+            print('now we are reading from client')
+            self.read()
+        if mask & selectors.EVENT_WRITE:
+            print('now we are writing to send')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
             self.write()
 
     def read(self):
@@ -137,7 +171,13 @@ class Message:
 
     def write(self):
         if self.request:
+<<<<<<< HEAD
             if not self.response_created:
+=======
+            print('we have gotten a request from client')
+            if not self.response_created:
+                print('we are creating a response to client')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
                 self.create_response()
 
         self._write()
@@ -209,10 +249,18 @@ class Message:
 
     def create_response(self):
         if self.jsonheader["content-type"] == "text/json":
+<<<<<<< HEAD
+=======
+            print('we are creating a response to mess where content is json')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
             response = self._create_response_json_content()
         else:
             # Binary or unknown content-type
             response = self._create_response_binary_content()
         message = self._create_message(**response)
         self.response_created = True
+<<<<<<< HEAD
+=======
+        print('we have created a response to client, now we are putting it in send buffer')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
         self._send_buffer += message

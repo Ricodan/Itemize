@@ -10,18 +10,30 @@ import libclient
 sel = selectors.DefaultSelector()
 
 
+<<<<<<< HEAD
 def create_request(action, value):
+=======
+def create_request(action, value, arg):
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
     if action == "search":
         return dict(
             type="text/json",
             encoding="utf-8",
+<<<<<<< HEAD
             content=dict(action=action, value=value),
+=======
+            content=dict(action=action, value=value, arg=arg),
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
         )
     else:
         return dict(
             type="binary/custom-client-binary-type",
             encoding="binary",
+<<<<<<< HEAD
             content=bytes(action + value, encoding="utf-8"),
+=======
+            content=bytes(action + value + arg, encoding="utf-8"),
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
         )
 
 
@@ -36,6 +48,7 @@ def start_connection(host, port, request):
     sel.register(sock, events, data=message)
 
 
+<<<<<<< HEAD
 if len(sys.argv) != 5:
     print("usage:", sys.argv[0], "<host> <port> <action> <value>")
     sys.exit(1)
@@ -43,6 +56,15 @@ if len(sys.argv) != 5:
 host, port = sys.argv[1], int(sys.argv[2])
 action, value = sys.argv[3], sys.argv[4]
 request = create_request(action, value)
+=======
+if len(sys.argv) != 6:
+    print("usage:", sys.argv[0], "<host> <port> <action> <value> <arg>")
+    sys.exit(1)
+
+host, port = sys.argv[1], int(sys.argv[2])
+action, value, arg = sys.argv[3], sys.argv[4], sys.argv[5]
+request = create_request(action, value, arg)
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
 start_connection(host, port, request)
 
 try:
@@ -55,8 +77,12 @@ try:
             except Exception as e:
                 print(
                     "main: error: exception for",
+<<<<<<< HEAD
                     f"{message.addr}:\n{traceback.format_exc()}",
                 )
+=======
+                    f"{message.addr}:\n{traceback.format_exc()}")
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
                 message.close()
         # Check for a socket being monitored to continue.
         if not sel.get_map():

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
+=======
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
 import sys
 import selectors
 import json
@@ -7,7 +10,11 @@ import struct
 
 
 class Message:
+<<<<<<< HEAD
     def __init__(self, selector, sock, addr, request):
+=======
+    def __init__(self, selector, sock, addr, request): # set attributes/fields of the instance
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
         self.selector = selector
         self.sock = sock
         self.addr = addr
@@ -35,13 +42,24 @@ class Message:
         try:
             # Should be ready to read
             data = self.sock.recv(4096)
+<<<<<<< HEAD
+=======
+            print('we have read data from socket')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
         except BlockingIOError:
             # Resource temporarily unavailable (errno EWOULDBLOCK)
             pass
         else:
             if data:
+<<<<<<< HEAD
                 self._recv_buffer += data
             else:
+=======
+                print('we have received data and now we put it in receiver buffer')
+                self._recv_buffer += data
+            else:
+                print('we have no data to read from socket and no data read to put in receiver buffer')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
                 raise RuntimeError("Peer closed.")
 
     def _write(self):
@@ -49,6 +67,10 @@ class Message:
             print("sending", repr(self._send_buffer), "to", self.addr)
             try:
                 # Should be ready to write
+<<<<<<< HEAD
+=======
+                print('we are now sending what is in the send buffer')
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
                 sent = self.sock.send(self._send_buffer)
             except BlockingIOError:
                 # Resource temporarily unavailable (errno EWOULDBLOCK)
@@ -206,4 +228,8 @@ class Message:
             )
             self._process_response_binary_content()
         # Close when response has been processed
+<<<<<<< HEAD
         self.close()
+=======
+            self.close()
+>>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
