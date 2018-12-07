@@ -5,18 +5,11 @@ import socket
 import selectors
 import types
 
+lists = {}
 
 sel = selectors.DefaultSelector()
 
-
-#host = '127.0.0.1'
-#port = 65432
-
-def accept_wrapper(sock):
-    conn, addr = sock.accept()
-    print("accepted connection from:", addr)
-
-welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list(name_of_list)\nedit_list(name_of_list)\nshow_lists()\nEnter your function:"
+welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nEnter your function:"
 
 def accept_wrapper(sock):
     conn, addr = sock.accept()  # lsocket Should be ready to read
@@ -27,6 +20,33 @@ def accept_wrapper(sock):
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
     sel.register(conn, events, data=data)
 
+def create_new_list(key, mask):
+    # send prompt to client to enter name of new list
+
+    sock = key.fileobj
+    data = key.data
+    prompt_msg = 'Enter name of new list: '
+    data.outb = prompt_msg.encode()
+    if mask & selectors.EVENT_WRITE:    # if server is sending stuff
+        if data.outb:
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", str(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
+            data.outb = data.outb[sent:]
+    # new_list_name = input('Enter name of new list: ')
+    # # append this new list to dictionary holding all lists
+    # lists[new_list_name] = []
+    # # send confirmation msg to client
+    # sock = key.fileobj
+    # data = key.data
+    # confirm_msg = 'Created new list called ' + new_list_name
+    # data.outb = confirm_msg.encode()
+    # if mask & selectors.EVENT_WRITE:    # if server is sending stuff
+    #     if data.outb:
+    #         # since we appended stuff to field data.outbound, we are now going to send it
+    #         print("sending", str(data.outb), "to", data.addr)
+    #         sent = sock.send(data.outb)  # Should be ready to write
+    #         data.outb = data.outb[sent:]
 
 def service_connection(key, mask):
     sock = key.fileobj
@@ -39,18 +59,12 @@ def service_connection(key, mask):
         recv_data = sock.recv(1024).decode()  # Should be ready to read
 
         if recv_data:
-            print("received", str(recv_data), "from connection", data.connid)
+            print("received", str(recv_data), "from connection")
             # now we have received stuff and we append this to outbound data
-            data.outb += recv_data
-
-        else:
-            print("closing connection to", data.addr)
-            sel.unregister(sock)
-            sock.close()
-    if mask & selectors.EVENT_WRITE:
-        if data.outb:
-            print("echoing", repr(data.outb), "to", data.addr)
-
+            #data.outb += recv_data
+            # look at recv_data - go to that function
+            if recv_data == 'create_new_list()':
+                create_new_list(key, mask)
         else:   # if we did not receive data from client - then close connection
             print("closing connection to", data.addr)
             sel.unregister(sock)
