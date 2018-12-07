@@ -31,6 +31,15 @@ def enter_list_name(key, mask):
     # read user input
     sock = key.fileobj
     data = key.data
+    if mask & selectors.EVENT_WRITE:
+        if not data.outb:
+            # read from user input
+            data.outb = input("Enter name of new list\n")
+            # nu innhåller data.outb något så då skickar vi på socketen
+        if data.outb:
+            print("sending", str(data.outb), "to connection", data.connid)
+            sent = sock.send(data.outb.encode())  # Should be ready to write
+            data.outb = data.outb[sent:]
 
 def service_connection(key, mask):
     sock = key.fileobj
