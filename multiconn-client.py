@@ -27,6 +27,10 @@ def start_connections(host, port, num_conns):
         )
         sel.register(sock, events, data=data)
 
+def enter_list_name(key, mask):
+    # read user input
+    sock = key.fileobj
+    data = key.data
 
 def service_connection(key, mask):
     sock = key.fileobj
@@ -36,6 +40,9 @@ def service_connection(key, mask):
         if recv_data:
             print("received", str(recv_data), "from connection", data.connid)
             data.recv_total += len(recv_data)
+            if recv_data == 'Enter name of new list: ':
+                # go to function enter_list_name
+                enter_list_name(key, mask)
         if not recv_data or data.recv_total == data.msg_total:
             print("closing connection", data.connid)
             sel.unregister(sock)

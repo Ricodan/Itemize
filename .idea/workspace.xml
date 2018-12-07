@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcfb88f2-ec7b-4600-b265-78ad747235e9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/echo-client.py" beforeDir="false" afterPath="$PROJECT_DIR$/echo-client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/echo-server.py" beforeDir="false" afterPath="$PROJECT_DIR$/echo-server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiconn-client.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiconn-client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiconn-server.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiconn-server.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -90,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="multiconn-server.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="multiconn-server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/multiconn-server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="23" column="69" lean-forward="true" selection-start-line="23" selection-start-column="69" selection-end-line="23" selection-end-column="69" />
+            <state relative-caret-position="175">
+              <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="43" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
@@ -102,11 +101,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="multiconn-client.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="multiconn-client.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/multiconn-client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="45" column="32" lean-forward="true" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
+            <state relative-caret-position="195">
+              <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
@@ -125,9 +124,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>byteorder</find>
-      <find>False</find>
-      <find>sending</find>
       <find>closing</find>
       <find>rabb</find>
       <find>_write</find>
@@ -153,8 +149,11 @@
       <find>data.out</find>
       <find>create_request</find>
       <find>outb</find>
-      <find>echo</find>
       <find>sendi</find>
+      <find>echo</find>
+      <find>recei</find>
+      <find>input</find>
+      <find>enter</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -171,8 +170,8 @@
         <option value="$PROJECT_DIR$/libserver.py" />
         <option value="$PROJECT_DIR$/echo-server.py" />
         <option value="$PROJECT_DIR$/echo-client.py" />
-        <option value="$PROJECT_DIR$/multiconn-client.py" />
         <option value="$PROJECT_DIR$/multiconn-server.py" />
+        <option value="$PROJECT_DIR$/multiconn-client.py" />
       </list>
     </option>
   </component>
@@ -553,20 +552,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/multiconn-client.py">
+    <entry file="file://$PROJECT_DIR$/multiconn-server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="45" column="32" lean-forward="true" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
+        <state relative-caret-position="175">
+          <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="43" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/multiconn-server.py">
+    <entry file="file://$PROJECT_DIR$/multiconn-client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="23" column="69" lean-forward="true" selection-start-line="23" selection-start-column="69" selection-end-line="23" selection-end-column="69" />
+        <state relative-caret-position="195">
+          <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
           </folding>
