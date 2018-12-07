@@ -1,57 +1,70 @@
-import selectors
+#!/usr/bin/env python3
+
+import sys
 import socket
+import selectors
+import types
+
 sel = selectors.DefaultSelector()
 
-
-HOST = '127.0.0.1'
-PORT = 65432
+welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list(name_of_list)\nedit_list(name_of_list)\nshow_lists()\nEnter your function:"
 
 def accept_wrapper(sock):
-    conn, addr = sock.accpet()
-    print("accepted connection from:", addr)
+    conn, addr = sock.accept()  # lsocket Should be ready to read
+    print("accepted connection from", addr)
     conn.setblocking(False)
-    data = types.SimpleNamespace(addr=addr, inb=b'', outb=b'')
+    data = types.SimpleNamespace(addr=addr, inb=b"", outb=welcome.encode())
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
     sel.register(conn, events, data=data)
+
 
 def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
-
-    if mask & selectors.EVENT_READ:
-        recv_data = sock.recv(1024)
+    if mask & selectors.EVENT_READ: # if server is going to read data
+        recv_data = sock.recv(1024).decode()  # Should be ready to read
         if recv_data:
+            print("received", str(recv_data), "from connection", data.connid)
+            # now we have received stuff and we append this to outbound data
             data.outb += recv_data
-
-        else:
-            print("Closing connection to", data.addr)
+        else:   # if we did not receive data from client - then close connection
+            print("closing connection to", data.addr)
             sel.unregister(sock)
             sock.close()
-
-    if mask & selectors.EVENT_WRITE:
+    if mask & selectors.EVENT_WRITE:    # if server is sending stuff
         if data.outb:
-            print("echoing", repr(data.outb), "to", data.addr)
-            sent = sock.send(data.outb)
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", repr(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
 
 
+if len(sys.argv) != 3:
+    print("usage:", sys.argv[0], "<host> <port>")
+    sys.exit(1)
 
+host, port = sys.argv[1], int(sys.argv[2])
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-lsock.bind((HOST,PORT))
+lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+lsock.bind((host, port))
 lsock.listen()
 print("listening on", (host, port))
 lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
+# we have registrered the lsock as read
 
-while True:
-    events = sel.select(timeout=none)
-    for key, mask in events:
-        is key.data is None:
-            accept_wrapper(key.fileobj)
+list = ['apples', '2 bananas', 'oranges']
 
-    else:
-        service_connection(key, mask)
+try:
+    while True:
+        events = sel.select(timeout=None)
+        for key, mask in events:
+            if key.data is None:
+                accept_wrapper(key.fileobj)
+            else:
+                service_connection(key, mask)
+except KeyboardInterrupt:
+    print("caught keyboard interrupt, exiting")
+finally:
+    sel.close()
 
-
-
-    
