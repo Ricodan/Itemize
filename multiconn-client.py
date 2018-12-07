@@ -32,28 +32,28 @@ def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
     if mask & selectors.EVENT_READ:
-<<<<<<< HEAD
+
         recv_data = sock.recv(1024)  # Should be ready to read
         if recv_data:
             print("received", repr(recv_data), "from connection", data.connid)
-=======
+
         recv_data = sock.recv(1024).decode()  # Should be ready to read
         if recv_data:
             print("received", str(recv_data), "from connection", data.connid)
->>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
+
             data.recv_total += len(recv_data)
         if not recv_data or data.recv_total == data.msg_total:
             print("closing connection", data.connid)
             sel.unregister(sock)
             sock.close()
     if mask & selectors.EVENT_WRITE:
-<<<<<<< HEAD
+
         if not data.outb and data.messages:
             data.outb = data.messages.pop(0)
         if data.outb:
             print("sending", repr(data.outb), "to connection", data.connid)
             sent = sock.send(data.outb)  # Should be ready to write
-=======
+
         if not data.outb:
             # read from user input
             data.outb = input("Enter your function\n")
@@ -61,7 +61,7 @@ def service_connection(key, mask):
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
             sent = sock.send(data.outb.encode())  # Should be ready to write
->>>>>>> 2d7c40dc6d03301a5e24e2fc066db8f4006042c5
+
             data.outb = data.outb[sent:]
 
 
