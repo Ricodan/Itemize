@@ -22,6 +22,7 @@ def start_connections(host, port, num_conns):
             connid=connid,
             msg_total=sum(len(m) for m in messages),
             recv_total=0,
+            sent_msgs=0,
             messages=list(messages),
             outb=b"",
         )
@@ -34,7 +35,7 @@ def enter_list_name(key, mask):
     if mask & selectors.EVENT_WRITE:
         if not data.outb:
             # read from user input
-            data.outb = input("Enter name of new list\n")
+            data.outb = input("Enter name of list\n")
             # nu innhåller data.outb något så då skickar vi på socketen
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
@@ -45,25 +46,34 @@ def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
     if mask & selectors.EVENT_READ:
+        print('we are reading')
         recv_data = sock.recv(1024).decode()  # Should be ready to read
         if recv_data:
+            data.recv_total += 1
             print("received", str(recv_data), "from connection", data.connid)
-            data.recv_total += len(recv_data)
-            if recv_data == 'Enter name of new list: ':
+            if recv_data == 'Enter name of list: ':
                 # go to function enter_list_name
                 enter_list_name(key, mask)
+            elif not data.recv_total == 1 and not data.sent_msgs == 0:
+                # if we want input from user
+                data.outb = input('Your input: ')
         if not recv_data or data.recv_total == data.msg_total:
             print("closing connection", data.connid)
             sel.unregister(sock)
             sock.close()
     if mask & selectors.EVENT_WRITE:
-        if not data.outb:
+        if data.recv_total == 1 and data.sent_msgs == 0:
             # read from user input
             data.outb = input("Enter your function\n")
+            # nu innhåller data.outb något så då skickar vi på socketen
+        #if not data.outb:
+            # read from user input
+            #data.outb = input("Enter your function\n")
             # nu innhåller data.outb något så då skickar vi på socketen
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
             sent = sock.send(data.outb.encode())  # Should be ready to write
+            data.sent_msgs += 1
             data.outb = data.outb[sent:]
 
 

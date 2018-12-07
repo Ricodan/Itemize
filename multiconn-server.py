@@ -9,43 +9,65 @@ lists = {}
 
 sel = selectors.DefaultSelector()
 
-welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nEnter your function:"
+welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nPress 'm' at any time to return to this menu"
 
 def accept_wrapper(sock):
     conn, addr = sock.accept()  # lsocket Should be ready to read
     print("accepted connection from", addr)
     conn.setblocking(False)
-    data = types.SimpleNamespace(addr=addr, inb=b"", outb=welcome.encode())
+    data = types.SimpleNamespace(addr=addr, inb=b"", outb=welcome.encode(), set_name=False, edit=False, list=None)
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
     sel.register(conn, events, data=data)
 
-def create_new_list(key, mask):
+def get_list_name(key, mask):
     # send prompt to client to enter name of new list
 
     sock = key.fileobj
     data = key.data
-    prompt_msg = 'Enter name of new list: '
-    data.outb = prompt_msg.encode()
+    msg = 'Enter name of list: '
+    data.outb = msg.encode()
     if mask & selectors.EVENT_WRITE:    # if server is sending stuff
         if data.outb:
             # since we appended stuff to field data.outbound, we are now going to send it
             print("sending", str(data.outb), "to", data.addr)
             sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
-    # new_list_name = input('Enter name of new list: ')
-    # # append this new list to dictionary holding all lists
-    # lists[new_list_name] = []
-    # # send confirmation msg to client
-    # sock = key.fileobj
-    # data = key.data
-    # confirm_msg = 'Created new list called ' + new_list_name
-    # data.outb = confirm_msg.encode()
-    # if mask & selectors.EVENT_WRITE:    # if server is sending stuff
-    #     if data.outb:
-    #         # since we appended stuff to field data.outbound, we are now going to send it
-    #         print("sending", str(data.outb), "to", data.addr)
-    #         sent = sock.send(data.outb)  # Should be ready to write
-    #         data.outb = data.outb[sent:]
+
+def handle_list_name(name, key, mask):
+    sock = key.fileobj
+    data = key.data
+    if data.set_name:
+        # we are creating a new list with this name
+        # append a new list to dictionary holding all lists
+        lists[name] = []
+        # send confirmation msg to client
+        msg = 'Created new list called ' + name
+        data.outb = msg.encode()
+        data.set_name=False
+    elif data.edit:
+        # we are editing the list with this name
+        data.list = name
+        send_edit_list_menu(key, mask)
+    #elif data.delete:
+        # we are deleting from the list with this name
+    if mask & selectors.EVENT_WRITE:    # if server is sending stuff
+        if data.outb:
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", str(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
+            data.outb = data.outb[sent:]
+
+def send_edit_list_menu(key, mask):
+    sock = key.fileobj
+    data = key.data
+    edit_list_menu = "Press 'a' to add items to list\nPress 'd' to delete items from list"
+    data.outb = edit_list_menu.encode()
+    if mask & selectors.EVENT_WRITE:  # if server is sending stuff
+        if data.outb:
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", str(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
+            data.outb = data.outb[sent:]
 
 def service_connection(key, mask):
     sock = key.fileobj
@@ -58,7 +80,22 @@ def service_connection(key, mask):
             #data.outb += recv_data
             # look at recv_data - go to that function
             if recv_data == 'create_new_list()':
-                create_new_list(key, mask)
+                get_list_name(key, mask)
+                data.set_name=True
+            elif recv_data == 'm':
+                data.outb = welcome.encode()
+            elif recv_data == 'edit_list()':
+                get_list_name(key, mask)
+                data.edit=True
+            elif recv_data == 'a':
+                # we have to display list that we are adding to
+                # we are sending a dictionary to client with key = name of list and value = list
+                # dictionary is an object so serialize with JSON
+                mess = lists[data.list]
+                print(mess)
+            else:
+                # at this stage, we are receiving a list name
+                handle_list_name(recv_data, key, mask)
         else:   # if we did not receive data from client - then close connection
             print("closing connection to", data.addr)
             sel.unregister(sock)
