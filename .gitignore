@@ -6,3 +6,5 @@ __pycache__/libserver\.cpython-36\.pyc
 *.xml
 
 \.idea/Itemize\.iml
+
+\.idea/Distributed Systems\.iml
