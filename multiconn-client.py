@@ -31,20 +31,23 @@ def enter_list_name(key, mask):
     # read user input
     sock = key.fileobj
     data = key.data
+    if mask & selectors.EVENT_WRITE:
+        if not data.outb:
+            # read from user input
+            data.outb = input("Enter name of new list\n")
+            # nu innhåller data.outb något så då skickar vi på socketen
+        if data.outb:
+            print("sending", str(data.outb), "to connection", data.connid)
+            sent = sock.send(data.outb.encode())  # Should be ready to write
+            data.outb = data.outb[sent:]
 
 def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
     if mask & selectors.EVENT_READ:
-
-        recv_data = sock.recv(1024)  # Should be ready to read
-        if recv_data:
-            print("received", repr(recv_data), "from connection", data.connid)
-
         recv_data = sock.recv(1024).decode()  # Should be ready to read
         if recv_data:
             print("received", str(recv_data), "from connection", data.connid)
-
             data.recv_total += len(recv_data)
             if recv_data == 'Enter name of new list: ':
                 # go to function enter_list_name
@@ -54,13 +57,6 @@ def service_connection(key, mask):
             sel.unregister(sock)
             sock.close()
     if mask & selectors.EVENT_WRITE:
-
-        if not data.outb and data.messages:
-            data.outb = data.messages.pop(0)
-        if data.outb:
-            print("sending", repr(data.outb), "to connection", data.connid)
-            sent = sock.send(data.outb)  # Should be ready to write
-
         if not data.outb:
             # read from user input
             data.outb = input("Enter your function\n")
@@ -68,7 +64,6 @@ def service_connection(key, mask):
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
             sent = sock.send(data.outb.encode())  # Should be ready to write
-
             data.outb = data.outb[sent:]
 
 
