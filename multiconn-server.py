@@ -4,6 +4,7 @@ import sys
 import socket
 import selectors
 import types
+import json
 
 lists = {}
 
@@ -39,7 +40,7 @@ def handle_list_name(name, key, mask):
     if data.set_name:
         # we are creating a new list with this name
         # append a new list to dictionary holding all lists
-        lists[name] = []
+        lists[name] = ['apple', 'banana', '3 oranges']
         # send confirmation msg to client
         msg = 'Created new list called ' + name
         data.outb = msg.encode()
@@ -69,6 +70,23 @@ def send_edit_list_menu(key, mask):
             sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
 
+def send_list_to_edit(key, mask):
+    sock = key.fileobj
+    data = key.data
+    # we have to display list that we are adding to
+    # we are sending a dictionary to client with key = name of list and value = list
+    # dictionary is an object so serialize with JSON
+    # create the dictionary we are sending to client first
+    dic = {data.list: lists[data.list]}
+    data.outb = json.dumps(dic).encode()
+    if mask & selectors.EVENT_WRITE:  # if server is sending stuff
+        if data.outb:
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", str(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
+            data.outb = data.outb[sent:]
+
+
 def service_connection(key, mask):
     sock = key.fileobj
     data = key.data
@@ -88,11 +106,7 @@ def service_connection(key, mask):
                 get_list_name(key, mask)
                 data.edit=True
             elif recv_data == 'a':
-                # we have to display list that we are adding to
-                # we are sending a dictionary to client with key = name of list and value = list
-                # dictionary is an object so serialize with JSON
-                mess = lists[data.list]
-                print(mess)
+                send_list_to_edit(key, mask)
             else:
                 # at this stage, we are receiving a list name
                 handle_list_name(recv_data, key, mask)
