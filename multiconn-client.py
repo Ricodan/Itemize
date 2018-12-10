@@ -47,6 +47,7 @@ def service_connection(key, mask):
     data = key.data
     if mask & selectors.EVENT_READ:
         print('we are reading')
+        #This decodes to a string
         recv_data = sock.recv(1024).decode()  # Should be ready to read
         if recv_data:
             data.recv_total += 1
