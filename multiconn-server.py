@@ -5,6 +5,7 @@ import socket
 import selectors
 import types
 import json
+import multi_thread
 
 # data representation
 # dictionary of all lists: key = list name, value = list
@@ -173,7 +174,8 @@ lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 # we have registrered the lsock as read
 
-list = ['apples', '2 bananas', 'oranges']
+
+
 
 try:
     while True:
