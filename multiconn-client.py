@@ -30,7 +30,8 @@ def start_connections(host, port, num_conns):
             delete=False,
             list=None,
             cont=False,
-            show=False
+            show=False,
+            show_all=False
         )
         sel.register(sock, events, data=data)
 
@@ -58,7 +59,7 @@ def print_list(list):
 def get_list(key, mask):
     sock = key.fileobj
     data = key.data
-    data.outb = 'show_lists()'
+    data.outb = 'show_list()'
     if mask & selectors.EVENT_WRITE:
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
@@ -72,6 +73,7 @@ def service_connection(key, mask):
     data = key.data
     if mask & selectors.EVENT_READ:
         print('we are reading')
+        print(data.show_all)
         if data.show:
             # receive json
             recv_data = sock.recv(1024)
@@ -80,6 +82,23 @@ def service_connection(key, mask):
             print_list(recv_data[data.list])
             data.show=False
             data.outb = input('Your input: ')
+        elif data.show_all:
+            recv_data = sock.recv(1024)
+            recv_data = json.loads(recv_data)
+            print('These are your lists:\n')
+            print_list(recv_data)
+            data.show_all = False
+            data.show=True
+            # get input from user
+            data.outb = input('Type index of list to display: ')
+            index = int(data.outb)-1
+            data.list = recv_data[index]
+            if mask & selectors.EVENT_WRITE:
+                if data.outb:
+                    print("sending", str(data.outb), "to connection", data.connid)
+                    sent = sock.send(data.outb.encode())  # Should be ready to write
+                    data.sent_msgs += 1
+                    data.outb = data.outb[sent:]
         elif data.add:
             # receive json
             recv_data = sock.recv(1024)
@@ -143,6 +162,9 @@ def service_connection(key, mask):
                 elif not data.recv_total == 1 and not data.sent_msgs == 0:
                     # if we want input from user
                     data.outb = input('Your input: ')
+                    if data.outb == 'show_lists()':
+                        data.show_all=True
+                        print('setting data.show_all to ', data.show_all)
         if not recv_data or data.recv_total == data.msg_total:
             print("closing connection", data.connid)
             sel.unregister(sock)
