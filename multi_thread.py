@@ -2,6 +2,7 @@
 #import multiconn-server
 
 import threading
+import socket
 
 
 class activeSocket( threading.Thread):
@@ -11,6 +12,8 @@ class activeSocket( threading.Thread):
         self.queue = queue
         self.port = port
         #self.function = function
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind((HOST, TCP_PORT))
 
     def run(self):
         print('created active socket')
@@ -20,33 +23,35 @@ class activeSocket( threading.Thread):
 
 
 class passiveSocket(threading.Thread):
-    def __init__(self, port, queue):
+    def __init__(self, sock, port, queue):
         threading.Thread.__init__(self)
         self.queue = queue
         self.port = port
+        self.sock = sock
         #self.function = function
 
     def run(self):
             print('created passive socket')
-            recv_data = self.recv(1024).decode()
+            recv_data = self.sock.recv(1024).decode()
             print(recv_data)
 
 # class server_worker() that will start off an active and a passive socket/threads at the server worker node
 
 class server_worker(threading.Thread):
-    def __init__(self, port, queue1, queue2, queue3, function):
+    def __init__(self, sock, port, queue1, queue2, queue3, function):
         threading.Thread.__init__(self)
         self.server_queue = queue1
         self.active_thread_queue = queue2
         self.passive_thread_queue = queue3
         self.port = port
         self.function = function
+        self.sock = sock
 
 
     def run(self):
             print('now we run the function in server worker thread')
             # start active and passive sockets at server worker node
-            self.function(self.port, self.active_thread_queue, self.passive_thread_queue)
+            self.function(self.sock, self.port, self.active_thread_queue, self.passive_thread_queue)
             # server worker node should try to read out messeges from the queue it shares with main server node
             while True:
                 msg = self.server_queue.get()
