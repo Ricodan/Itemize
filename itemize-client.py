@@ -21,7 +21,7 @@ tcpClientA.connect((HOST, PORT))
 
 # should we really create a new thread for the active client socket or should it rather run in the main thread??
 #new_active_thread = multi_thread.activeSocket(tcpClientA.getsockname()[1], active_queue, print_confirm)
-new_passive_thread = multi_thread.passiveSocket(tcpClientA, tcpClientA.getsockname()[1]+1,passive_queue)
+new_passive_thread = multi_thread.passive_client_socket(tcpClientA.getsockname()[1]+1,passive_queue)
 #new_active_thread.start()
 new_passive_thread.start()
 print('started passive thread')
