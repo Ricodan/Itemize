@@ -1,0 +1,10 @@
+
+__pycache__/libserver\.cpython-36\.pyc
+
+*.pyc
+
+*.xml
+
+\.idea/Itemize\.iml
+
+\.idea/Distributed Systems\.iml

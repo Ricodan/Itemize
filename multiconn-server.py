@@ -5,6 +5,7 @@ import socket
 import selectors
 import types
 import json
+import multi_thread
 
 # data representation
 # dictionary of all lists: key = list name, value = list
@@ -14,6 +15,25 @@ clients = {}
 sel = selectors.DefaultSelector()
 
 welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nPress 'm' at any time to return to this menu"
+
+def send_dictionary(key, mask):
+
+    json.dumps(shopping_lists)
+    sock = key.fileobj
+    data = key.data
+    prompt_msg = 'Which list do you want?: '
+
+    data.outb = prompt_msg.encode()
+    if mask & selectors.EVENT_WRITE:  # if server is sending stuff
+        if data.outb:
+            # since we appended stuff to field data.outbound, we are now going to send it
+            print("sending", str(data.outb), "to", data.addr)
+            sent = sock.send(data.outb)  # Should be ready to write
+            data.outb = data.outb[sent:]
+
+            #if we want to view one list only then only that list should be sent to the client.
+
+
 
 def accept_wrapper(sock):
     conn, addr = sock.accept()  # lsocket Should be ready to read
@@ -201,7 +221,8 @@ lsock.setblocking(False)
 sel.register(lsock, selectors.EVENT_READ, data=None)
 # we have registrered the lsock as read
 
-list = ['apples', '2 bananas', 'oranges']
+
+
 
 try:
     while True:
@@ -215,4 +236,3 @@ except KeyboardInterrupt:
     print("caught keyboard interrupt, exiting")
 finally:
     sel.close()
-

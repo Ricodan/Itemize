@@ -1,24 +1,40 @@
 #!/usr/bin/env python3
 
+import threading
 import sys
 import socket
 import selectors
 import types
 import json
 
+
+
 sel = selectors.DefaultSelector()
 messages = [b"Message 1 from client.", b"Message 2 from client."]
 
 
+
+
+
 def start_connections(host, port, num_conns):
     server_addr = (host, port)
+
     for i in range(0, num_conns):
         connid = i + 1
         print("starting connection", connid, "to", server_addr)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock2  = sock.dup
+
+        sock2.setblocking(False)
         sock.setblocking(False)
+
+        sock2.connect_ex(server_addr)
         sock.connect_ex(server_addr)
+
+
         events = selectors.EVENT_READ | selectors.EVENT_WRITE
+
+        
         data = types.SimpleNamespace(
             connid=connid,
             msg_total=sum(len(m) for m in messages),
@@ -177,7 +193,7 @@ def service_connection(key, mask):
         #if not data.outb:
             # read from user input
             #data.outb = input("Enter your function\n")
-            # nu innhåller data.outb något så då skickar vi på socketen
+            # nu innehåller data.outb något så då skickar vi på socketen
         if data.outb:
             print("sending", str(data.outb), "to connection", data.connid)
             sent = sock.send(data.outb.encode())  # Should be ready to write
@@ -192,6 +208,12 @@ if len(sys.argv) != 4:
 host, port, num_conns = sys.argv[1:4]
 start_connections(host, int(port), int(num_conns))
 
+#one thread will have one port and the other thread will have another port
+
+
+listening_thread = eventThread(1, "listening", host, port+1, sel)
+
+
 try:
     while True:
         events = sel.select(timeout=1)
@@ -205,3 +227,16 @@ except KeyboardInterrupt:
     print("caught keyboard interrupt, exiting")
 finally:
     sel.close()
+
+
+
+
+
+
+
+
+#Create nodes with 2 sockets that is always listening and the other is sending commands to the server.
+#"since sock.recv is blocking then it's better to sue threads, like 2 threads, or asyncIO. when there's something
+#in the queue then execute it
+
+#Create two threads, one with recv thread and the other with keyboard input
