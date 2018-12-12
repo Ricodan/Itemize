@@ -1,0 +1,24 @@
+-----Notes for the Distributed Systems project (Shopping List App)--------
+--------------------------------------------------------------------------
+
+
+--From Lorenzo - How to receive notifications and updates on lists between many clients. 
+--------------
++ Have a list with all the clients
++ Maintain a connection with all the IP:s (and port)
++ Need a dictionary to keep the subscription-list (have a key for the list, like ID)
++ When we recieve an update from one of the client, we can match all the subscribers
+  with the same ID on the list.
++ Create the nodes with two sockets, one is listening and the other can communicate with the
+  main thread (to the server)
++ Make two thread running, one that is always receiving something.   
++ Every socket has its own port.
++ async.io queue. Put updates in the queue.
++ The thread will: Listen for updates, receive update, put in the queue, then execute it print
++ Communication between the two threads is between a queue.
++ A callback is event driven thingie, whenever something is in the queue, execute it
+  checking the queue asynchronous. 
++ The subscription list is distributed between several nodes.
++ Each client has a list of interest, this list contains the subs of the same list!
+  In case the server dies, at least some nodes know who is subscribing to what and can
+  distirbute accordingly. 
