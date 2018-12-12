@@ -5,16 +5,14 @@ import threading
 import socket
 
 HOST = '127.0.0.1'
+TCP_PORT = 2005
 
 class active_server_socket( threading.Thread):
     #another queue thatwill link to the user intreface
-    def __init__(self,port, queue):
+    def __init__(self, sock, port, queue):
         threading.Thread.__init__(self)
         self.queue = queue
         self.port = port
-        #self.function = function
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((HOST, self.port))
         self.sock= sock
 
     def run(self):
@@ -28,14 +26,20 @@ class passive_client_socket(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
         self.port = port
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((HOST, self.port))
-        self.sock = sock
+        tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        connected = False
+        while not connected:
+            try:
+                tcpClientA.connect((HOST, TCP_PORT))
+                connected = True
+            except Exception as e:
+                pass  # Do nothing, just try again
         #self.function = function
+        self.sock = tcpClientA
 
     def run(self):
             while True:
-                print('created passive socket')
+                print('created passive client socket')
                 recv_data = self.sock.recv(1024).decode()
                 print(recv_data)
 
@@ -67,8 +71,15 @@ class server_worker(threading.Thread):
 
     def run(self):
             print('now we run the function in server worker thread')
+            # create a socket that listens
+            tcpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tcpServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            tcpServer.bind((HOST, TCP_PORT))
+            tcpServer.listen()
+            print('server worker listening')
+            conn, addr = tcpServer.accept()
             # start active and passive sockets at server worker node
-            self.function(self.sock, self.port, self.active_thread_queue, self.passive_thread_queue)
+            self.function(conn, self.sock, self.port, self.active_thread_queue, self.passive_thread_queue)
             # server worker node should try to read out messeges from the queue it shares with main server node
             while True:
                 msg = self.server_queue.get()
