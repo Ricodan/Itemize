@@ -42,8 +42,8 @@ def hello_passive(queue):
 
 def create_active_passive(conn, sock, port, active_queue, passive_queue):
     print("Now we are trying to create the two sockets at server worker node")
-    active_thread = multi_thread.active_server_socket(conn, TCP_PORT+2, passive_queue)
-    passive_thread = multi_thread.passive_server_socket(sock, TCP_PORT+1, active_queue)
+    active_thread = multi_thread.active_server_socket(conn, TCP_PORT+3, passive_queue)
+    passive_thread = multi_thread.passive_server_socket(sock, port, TCP_PORT+2, active_queue)
     active_thread.start()
     passive_thread.start()
     threads.append(active_thread)

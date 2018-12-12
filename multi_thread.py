@@ -3,6 +3,10 @@
 
 import threading
 import socket
+import types
+import service_connection
+
+welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nPress 'm' at any time to return to this menu"
 
 HOST = '127.0.0.1'
 TCP_PORT = 2005
@@ -20,6 +24,8 @@ class active_server_socket( threading.Thread):
         # this one is just writing
         msg = 'sending msg from active socket'
         self.sock.send(msg.encode())
+        recv_data = self.sock.recv(1024).decode()
+        print(recv_data)
 
 class passive_client_socket(threading.Thread):
     def __init__(self, port, queue):
@@ -39,22 +45,24 @@ class passive_client_socket(threading.Thread):
 
     def run(self):
             while True:
-                print('created passive client socket')
                 recv_data = self.sock.recv(1024).decode()
                 print(recv_data)
 
 class passive_server_socket(threading.Thread):
-    def __init__(self, sock, port, queue):
+    def __init__(self, sock, client_port, server_port, queue):
         threading.Thread.__init__(self)
         self.queue = queue
-        self.port = port
+        self.port = client_port
         self.sock = sock
         #self.function = function
 
     def run(self):
             print('created passive socket')
-            recv_data = self.sock.recv(1024).decode()
-            print(recv_data)
+            data = types.SimpleNamespace(addr=self.port, inb=b"", outb=welcome.encode(), show=False, sent_msg=0,
+                                         set_name_fst=False, delete=False, set_name=False, edit=False, list=None,
+                                         add=False)
+            while True:
+                service_connection.service_connection(self.sock, data)
 
 # class server_worker() that will start off an active and a passive socket/threads at the server worker node
 

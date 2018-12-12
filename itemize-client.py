@@ -1,6 +1,8 @@
 import socket
 import multi_thread
 import queue
+import types
+import client_service_conn
 
 HOST = '127.0.0.1'
 PORT = 2004
@@ -27,8 +29,19 @@ new_passive_thread.start()
 print('started passive thread')
 #threads.append(new_active_thread)
 threads.append(new_passive_thread)
-msg = 'check if active client socket can communicate with passive server socket'
-tcpClientA.send(msg.encode())
+data = types.SimpleNamespace(
+            recv_total=0,
+            sent_msgs=0,
+            outb=b"",
+            add=False,
+            delete=False,
+            list=None,
+            cont=False,
+            show=False,
+            show_all=False
+        )
+while True:
+    client_service_conn.service_connection(tcpClientA, data)
 
 for t in threads:
         t.join()
