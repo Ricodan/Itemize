@@ -4,8 +4,9 @@
 import threading
 import socket
 
+HOST = '127.0.0.1'
 
-class activeSocket( threading.Thread):
+class active_server_socket( threading.Thread):
     #another queue thatwill link to the user intreface
     def __init__(self,port, queue):
         threading.Thread.__init__(self)
@@ -13,16 +14,32 @@ class activeSocket( threading.Thread):
         self.port = port
         #self.function = function
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((HOST, TCP_PORT))
+        sock.bind((HOST, self.port))
+        self.sock= sock
 
     def run(self):
         print('created active socket')
         # this one is just writing
         msg = 'sending msg from active socket'
-        self.send(msg.encode())
+        self.sock.send(msg.encode())
 
+class passive_client_socket(threading.Thread):
+    def __init__(self, port, queue):
+        threading.Thread.__init__(self)
+        self.queue = queue
+        self.port = port
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind((HOST, self.port))
+        self.sock = sock
+        #self.function = function
 
-class passiveSocket(threading.Thread):
+    def run(self):
+            while True:
+                print('created passive socket')
+                recv_data = self.sock.recv(1024).decode()
+                print(recv_data)
+
+class passive_server_socket(threading.Thread):
     def __init__(self, sock, port, queue):
         threading.Thread.__init__(self)
         self.queue = queue
