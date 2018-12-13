@@ -3,7 +3,9 @@ import queue
 import server_worker
 import multi_thread
 import threading
-
+#TODO:
+# - The code works for ONE server_worker.
+# - Make it so it works for many! 
 class server_worker(threading.Thread):
     def __init__(self, port, queue, function):
         threading.Thread.__init__(self)
@@ -24,47 +26,45 @@ tcpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcpServer.bind((HOST,TCP_PORT))
 threads = []
-server_comm_queue = queue.Queue(10)
-active_thread_queue = queue.Queue(10)
-passive_thread_queue = queue.Queue(10)
+client_dict = {}
+client_ID = 0
 
-# def hello_active(queue):
-#     print('Created active server socket')
-#     # check if active server socket can write to passive client socket
-#     msg = 'now active server socket is talking to passive client socket'
-#     data =
 
-def hello_passive(queue):
-    print('Created passive server socket')
-    # check if passive server socket can read out msgs from active client socket
-    msg = queue.get()
-    print(msg)
-
-def create_active_passive(conn, sock, port, active_queue, passive_queue):
-    print("Now we are trying to create the two sockets at server worker node")
-    active_thread = multi_thread.active_server_socket(conn, TCP_PORT+2, passive_queue)
-    passive_thread = multi_thread.passive_server_socket(sock, TCP_PORT+1, active_queue)
-    active_thread.start()
-    passive_thread.start()
-    threads.append(active_thread)
-    threads.append(passive_thread)
+def notify_client(sock, queue):
+    print("Waiting for notification for client. \n")
+    msg = queue.get().encode()
+    print(str(msg))
+    #sock.send(queue.get().encode())
+    sock.send(msg)
+    
+def notify_server(sock, queue):
+    print("Waiting for notification for client message. \n")
+    msg = sock.recv().decode()
+    #queue.put(sock.recv().decode())
+    queue.put(msg)
+    
+notification_queue = queue.Queue(10)
 
 while True:
+
     print( "Now we listen")
     tcpServer.listen(4)
 
-    (conn, (ip, port)) = tcpServer.accept()
+    (sock, (ip, port)) = tcpServer.accept()
+    print(str(sock))
+    server_comm_queue = queue.Queue(10)
+
+    client_ID += 1
+    client_dict[client_ID] = server_comm_queue
+
+    a = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    a.connect(('localhost', 6000+client_ID)) # change this to the sockets host and port
+    
     # we create a new server worker thread with an import function
-    newThread = multi_thread.server_worker(conn, port, server_comm_queue, active_thread_queue, passive_thread_queue, create_active_passive)
+    newThread = multi_thread.server_worker(node(sock,port,server_comm_queue, notify_server), node(a,port+1, notification_queue, notify_client))
     print('created new thread in server')
     newThread.start()
     threads.append(newThread)
-    server_comm_queue.put('now i talk to server worker')
-    # get msg from server worker
-    print('A')
-    #msg = server_comm_queue.get()
-    print('B')
-    #print(msg)
 
 for t in threads:
         t.join()
