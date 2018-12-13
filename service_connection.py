@@ -89,13 +89,16 @@ def send_edit_list_menu(sock, data):
             sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
 
-def send_list(sock, data):
+def send_list(sock, data, queue):
     # we have to display list that we are adding to
     # we are sending a dictionary to client with key = name of list and value = list
     # dictionary is an object so serialize with JSON
     # create the dictionary we are sending to client first
     dic = {data.list: lists[data.list]}
+    #queue.put(dic)
     data.outb = json.dumps(dic).encode()
+    if data.push_to_s:
+        queue.put(dic)
     #if mask & selectors.EVENT_WRITE:  # if server is sending stuff
     if data.outb:
             # since we appended stuff to field data.outbound, we are now going to send it
@@ -114,7 +117,7 @@ def get_lists(sock, data):
             sent = sock.send(data.outb)  # Should be ready to write
             data.outb = data.outb[sent:]
 
-def service_connection(sock, data):
+def service_connection(sock, data, queue):
     #if mask & selectors.EVENT_READ: # if server is going to read data
     if data.outb:
         data.sent_msg += 1
@@ -143,15 +146,16 @@ def service_connection(sock, data):
             elif recv_data == 'a':
                 data.edit=False
                 data.add=True
-                send_list(sock, data)
+                send_list(sock, data,queue)
             elif recv_data == 'd':
                 # we are deleting items from a list
                 data.delete=True
-                send_list(sock, data)
+                send_list(sock, data,queue)
             elif recv_data == 'show_list()':
+                data.push_to_s=True
                 data.delete=False
                 data.add=False
-                send_list(sock, data)
+                send_list(sock, data, queue)
             elif recv_data == 'show_lists()':
                 # now we want to send to client a dictionary of all lists that he/she is subscribing to
                 data.show=True
