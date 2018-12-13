@@ -29,7 +29,6 @@ threads = []
 client_dict = {}
 client_ID = 0
 
-
 def notify_client(sock, queue):
     print("Waiting for notification for client. \n")
     msg = queue.get().encode()

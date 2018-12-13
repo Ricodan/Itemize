@@ -5,6 +5,10 @@ import sys
 import multi_thread as mt
 
 
+import types
+import client_service_conn
+
+
 HOST = '127.0.0.1'
 PORT = 2004
 BUFFER_SIZE = 1024

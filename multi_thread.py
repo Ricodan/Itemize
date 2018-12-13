@@ -3,6 +3,10 @@
 
 import threading
 import socket
+import types
+import service_connection
+
+welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nPress 'm' at any time to return to this menu"
 
 HOST = '127.0.0.1'
 TCP_PORT = 2005
