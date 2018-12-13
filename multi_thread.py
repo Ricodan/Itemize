@@ -5,6 +5,7 @@ import threading
 import socket
 import types
 import service_connection
+import json
 
 welcome = "Welcome to Itemize!\nFunctions:\ncreate_new_list()\nedit_list()\nshow_lists()\nPress 'm' at any time to return to this menu"
 
@@ -17,15 +18,19 @@ class active_server_socket( threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
         self.port = port
-        self.sock= sock
+        self.sock = sock
 
     def run(self):
         print('created active socket')
         # this one is just writing
-        msg = 'sending msg from active socket'
+        msg = 'From: Active Server Socket: sending msg from active socket'
         self.sock.send(msg.encode())
-        recv_data = self.sock.recv(1024).decode()
-        print(recv_data)
+        #recv_data = self.sock.recv(1024).decode()
+        #print(recv_data)
+        while True:
+            dict = self.queue.get()
+            data = json.dumps(dict).encode()
+            self.sock.send(data)
 
 class passive_client_socket(threading.Thread):
     def __init__(self, port, queue):
@@ -33,10 +38,11 @@ class passive_client_socket(threading.Thread):
         self.queue = queue
         self.port = port
         tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tcpClientA.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         connected = False
         while not connected:
             try:
-                tcpClientA.connect((HOST, TCP_PORT))
+                tcpClientA.connect((HOST, self.port))
                 connected = True
             except Exception as e:
                 pass  # Do nothing, just try again
@@ -45,7 +51,10 @@ class passive_client_socket(threading.Thread):
 
     def run(self):
             while True:
-                recv_data = self.sock.recv(1024).decode()
+                print('PASSIVE CLIENT SOCKET: created passive client socket')
+                recv_data = self.sock.recv(1024)
+                recv_data = json.loads(recv_data)
+                print("CLIENT IS RECEIVING UPDATE ON A LIST")
                 print(recv_data)
 
 class passive_server_socket(threading.Thread):
@@ -57,41 +66,49 @@ class passive_server_socket(threading.Thread):
         #self.function = function
 
     def run(self):
+
+            print('PASSIVE SERVER SOCKET: created passive socket')
+            recv_data = self.sock.recv(1024).decode()
+            print(recv_data)
+
             print('created passive socket')
             data = types.SimpleNamespace(addr=self.port, inb=b"", outb=welcome.encode(), show=False, sent_msg=0,
                                          set_name_fst=False, delete=False, set_name=False, edit=False, list=None,
-                                         add=False)
+                                         add=False, push_to_s=False)
             while True:
-                service_connection.service_connection(self.sock, data)
+                service_connection.service_connection(self.sock, data, self.queue)
+
 
 # class server_worker() that will start off an active and a passive socket/threads at the server worker node
 
 class server_worker(threading.Thread):
-    def __init__(self, sock, port, queue1, queue2, queue3, function):
+    def __init__(self, sock, port, s_to_sw, sw_to_s, function):
         threading.Thread.__init__(self)
-        self.server_queue = queue1
-        self.active_thread_queue = queue2
-        self.passive_thread_queue = queue3
+        self.s_to_sw = s_to_sw
+        self.sw_to_s = sw_to_s
         self.port = port
         self.function = function
         self.sock = sock
 
 
     def run(self):
-            print('now we run the function in server worker thread')
+            print('SERVER WORKER: now we run the function in server worker thread')
             # create a socket that listens
             tcpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             tcpServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            tcpServer.bind((HOST, TCP_PORT))
+
+            print("MULTITHREAD", self.port+1)
+
+            tcpServer.bind((HOST, self.port+1))
             tcpServer.listen()
-            print('server worker listening')
-            conn, addr = tcpServer.accept()
+            print('SERVER WORKER: server worker listening')
+            sock2, addr = tcpServer.accept()
             # start active and passive sockets at server worker node
-            self.function(conn, self.sock, self.port, self.active_thread_queue, self.passive_thread_queue)
+            self.function(sock2, self.sock, self.port, self.s_to_sw, self.sw_to_s)
             # server worker node should try to read out messeges from the queue it shares with main server node
-            while True:
-                msg = self.server_queue.get()
-                print(msg)
+            #while True:
+             #   msg = self.sw_to_s.get()
+              #  print(msg)
                 #msg = 'now server worker talk to server node'
 
                 #self.server_queue.put(msg)
