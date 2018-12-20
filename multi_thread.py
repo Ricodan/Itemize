@@ -29,6 +29,7 @@ class active_server_socket( threading.Thread):
         #print(recv_data)
         while True:
             dict = self.queue.get()
+            print('ACTIVE SERVER IS SENDING: ', dict)
             data = json.dumps(dict).encode()
             self.sock.send(data)
 
@@ -50,10 +51,9 @@ class passive_client_socket(threading.Thread):
         self.sock = tcpClientA
 
     def run(self):
-            while True:
                 print('PASSIVE CLIENT SOCKET: created passive client socket')
                 recv_data = self.sock.recv(1024)
-                recv_data = json.loads(recv_data)
+                #recv_data = json.loads(recv_data)
                 print("CLIENT IS RECEIVING UPDATE ON A LIST")
                 print(recv_data)
 

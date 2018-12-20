@@ -71,6 +71,7 @@ while True:
     msg = sw_to_s.get()
     print('PRINTING WHAT WE GET FROM SERVER WORKER')
     print(msg)
+    s_to_sw.put(msg)
 
 for t in threads:
         t.join()

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcfb88f2-ec7b-4600-b265-78ad747235e9" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/client_service_conn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/itemize-client.py" beforeDir="false" afterPath="$PROJECT_DIR$/itemize-client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/itemize-server.py" beforeDir="false" afterPath="$PROJECT_DIR$/itemize-server.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multi_thread.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_thread.py" afterDir="false" />
     </list>
@@ -23,20 +21,8 @@
       <file leaf-file-name="multiconn-server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/multiconn-server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2750">
-              <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
-              <folding>
-                <element signature="e#24#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="service_connection.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/service_connection.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1815">
-              <caret line="121" column="25" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="25" />
+            <state relative-caret-position="225">
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
@@ -47,10 +33,10 @@
       <file leaf-file-name="itemize-server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/itemize-server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="45" column="68" selection-start-line="45" selection-start-column="68" selection-end-line="45" selection-end-column="68" />
+            <state relative-caret-position="900">
+              <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#23#36#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -59,10 +45,10 @@
       <file leaf-file-name="itemize-client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/itemize-client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="33" column="24" lean-forward="true" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+            <state relative-caret-position="525">
+              <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#24#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,35 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="multi_thread.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/multi_thread.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="579">
-              <caret line="79" column="18" lean-forward="true" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
-              <folding>
-                <element signature="e#44#60#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="multithread-clientA.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/multithread-clientA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="multiconn-client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/multiconn-client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="7" selection-end-column="11" />
+            <state relative-caret-position="1785">
+              <caret line="124" column="6" selection-start-line="124" selection-start-column="6" selection-end-line="124" selection-end-column="6" />
               <folding>
                 <element signature="e#24#40#0" expanded="true" />
               </folding>
@@ -116,8 +78,8 @@
       <file leaf-file-name="client_service_conn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client_service_conn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
-              <caret line="65" column="68" selection-start-line="65" selection-start-column="68" selection-end-line="65" selection-end-column="68" />
+            <state relative-caret-position="2130">
+              <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
               <folding>
                 <element signature="e#24#40#0" expanded="true" />
               </folding>
@@ -125,13 +87,34 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="service_connection.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/service_connection.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="old_server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/old_server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
+            <state relative-caret-position="960">
               <caret line="67" column="11" lean-forward="true" selection-start-line="67" selection-start-column="11" selection-end-line="67" selection-end-column="11" />
               <folding>
                 <element signature="e#43#55#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="multi_thread.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/multi_thread.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="20" column="9" lean-forward="true" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+              <folding>
+                <element signature="e#44#60#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -148,9 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>First</find>
-      <find>_create_res</find>
-      <find>send</find>
       <find>select</find>
       <find>data.out</find>
       <find>create_request</find>
@@ -178,6 +158,9 @@
       <find>data.set_name_fst</find>
       <find>work</find>
       <find>check if</find>
+      <find>print</find>
+      <find>sw_to</find>
+      <find>PRINTIN</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -203,10 +186,10 @@
         <option value="$PROJECT_DIR$/multithread-clientA.py" />
         <option value="$PROJECT_DIR$/server_worker.py" />
         <option value="$PROJECT_DIR$/itemize-client.py" />
-        <option value="$PROJECT_DIR$/service_connection.py" />
-        <option value="$PROJECT_DIR$/client_service_conn.py" />
         <option value="$PROJECT_DIR$/itemize-server.py" />
         <option value="$PROJECT_DIR$/multi_thread.py" />
+        <option value="$PROJECT_DIR$/service_connection.py" />
+        <option value="$PROJECT_DIR$/client_service_conn.py" />
       </list>
     </option>
   </component>
@@ -231,6 +214,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -242,12 +226,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../AD2Assignment3/sensitive.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -278,7 +261,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1303" height="780" extended-state="6" />
+    <frame x="65" y="24" width="1301" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -448,7 +431,7 @@
     <entry file="file://$PROJECT_DIR$/app-server.py" />
     <entry file="file://$PROJECT_DIR$/old_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
+        <state relative-caret-position="960">
           <caret line="67" column="11" lean-forward="true" selection-start-line="67" selection-start-column="11" selection-end-line="67" selection-end-column="11" />
           <folding>
             <element signature="e#43#55#0" expanded="true" />
@@ -461,8 +444,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/multiconn-server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2750">
-          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+        <state relative-caret-position="225">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
           </folding>
@@ -471,8 +454,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/multiconn-client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="7" selection-end-column="11" />
+        <state relative-caret-position="1785">
+          <caret line="124" column="6" selection-start-line="124" selection-start-column="6" selection-end-line="124" selection-end-column="6" />
           <folding>
             <element signature="e#24#40#0" expanded="true" />
           </folding>
@@ -483,38 +466,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client_service_conn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="65" column="68" selection-start-line="65" selection-start-column="68" selection-end-line="65" selection-end-column="68" />
-          <folding>
-            <element signature="e#24#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service_connection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1815">
-          <caret line="121" column="25" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="25" />
-          <folding>
-            <element signature="e#24#34#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/itemize-client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="33" column="24" lean-forward="true" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+        <state relative-caret-position="525">
+          <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#24#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -526,20 +486,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/service_connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_service_conn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2130">
+          <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
+          <folding>
+            <element signature="e#24#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/itemize-server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="45" column="68" selection-start-line="45" selection-start-column="68" selection-end-line="45" selection-end-column="68" />
+        <state relative-caret-position="900">
+          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#23#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/multi_thread.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
-          <caret line="79" column="18" lean-forward="true" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
+        <state relative-caret-position="15">
+          <caret line="20" column="9" lean-forward="true" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
           <folding>
             <element signature="e#44#60#0" expanded="true" />
           </folding>
