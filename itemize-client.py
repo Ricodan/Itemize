@@ -18,7 +18,7 @@ client_ID = int(sys.argv[1])
 def dummy_func(sock, queue):
     sock.accept()
     print("shit works")
-    sleep(1000)
+    #sleep(1000)
 
 a = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 b = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

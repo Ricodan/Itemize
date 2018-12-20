@@ -29,6 +29,8 @@ threads = []
 client_dict = {}
 client_ID = 0
 
+
+# these functions run by server workers
 def notify_client(sock, queue):
     print("Waiting for notification for client. \n")
     msg = queue.get().encode()
@@ -41,7 +43,8 @@ def notify_server(sock, queue):
     msg = sock.recv().decode()
     #queue.put(sock.recv().decode())
     queue.put(msg)
-    
+
+# this queue goes from sw to server
 notification_queue = queue.Queue(10)
 
 while True:
@@ -53,6 +56,7 @@ while True:
     print(str(sock))
     server_comm_queue = queue.Queue(10)
 
+    # here we create a dictionary mapping clientID's to subscriptions
     client_ID += 1
     client_dict[client_ID] = server_comm_queue
 
@@ -60,8 +64,8 @@ while True:
     a.connect(('localhost', 6000+client_ID)) # change this to the sockets host and port
     
     # we create a new server worker thread with an import function
-    newThread = multi_thread.server_worker(node(sock,port,server_comm_queue, notify_server), node(a,port+1, notification_queue, notify_client))
-    print('created new thread in server')
+    newThread = multi_thread.server_worker(multi_thread.node(sock,port,server_comm_queue, notify_server), multi_thread.node(a,port+1, notification_queue, notify_client))
+    print('created new thread server worker in server')
     newThread.start()
     threads.append(newThread)
 
